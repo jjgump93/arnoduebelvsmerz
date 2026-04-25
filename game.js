@@ -422,7 +422,12 @@ function drawTile(x, y, img) {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Bar-themed background
+    const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+    gradient.addColorStop(0, '#2a1f1a');
+    gradient.addColorStop(1, '#1a1410');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let y = 0; y < mapRows; y += 1) {
         for (let x = 0; x < mapCols; x += 1) {
@@ -430,8 +435,14 @@ function draw() {
             if (char === '1') {
                 drawTile(x, y, loadedImages.wall);
             } else {
-                ctx.fillStyle = '#070b1b';
+                // Wooden bar floor with subtle variation
+                const woodColor = (x + y) % 2 === 0 ? '#3d2f28' : '#4a3b33';
+                ctx.fillStyle = woodColor;
                 ctx.fillRect(x * tileSize + offsetX, y * tileSize, tileSize, tileSize);
+                // Add subtle grid lines for bar aesthetic
+                ctx.strokeStyle = '#2a1f1a';
+                ctx.lineWidth = 0.5;
+                ctx.strokeRect(x * tileSize + offsetX, y * tileSize, tileSize, tileSize);
             }
 
             if (beers.has(`${x},${y}`)) {
@@ -496,16 +507,20 @@ function draw() {
     const promilleScaleX = 0;
     const promilleScaleWidth = 40;
     const promilleScaleHeight = 480;
-    // Background
-    ctx.fillStyle = '#333';
+    // Background (bar wood color)
+    ctx.fillStyle = '#2a1f1a';
     ctx.fillRect(promilleScaleX, 0, promilleScaleWidth, promilleScaleHeight);
+    // Border
+    ctx.strokeStyle = '#8b6f47';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(promilleScaleX, 0, promilleScaleWidth, promilleScaleHeight);
     // Fill
     const promilleFillHeight = (promille / maxPromille) * promilleScaleHeight;
-    ctx.fillStyle = '#ff0000'; // Red for alcohol
+    ctx.fillStyle = '#ff4444'; // Red for alcohol
     ctx.fillRect(promilleScaleX, promilleScaleHeight - promilleFillHeight, promilleScaleWidth, promilleFillHeight);
     // Label
-    ctx.fillStyle = '#fff';
-    ctx.font = '12px Inter, sans-serif';
+    ctx.fillStyle = '#d4a574';
+    ctx.font = 'bold 11px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Promille', promilleScaleX + promilleScaleWidth / 2, 15);
 
@@ -513,16 +528,20 @@ function draw() {
     const scaleX = 712;
     const scaleWidth = 40;
     const scaleHeight = 480;
-    // Background
-    ctx.fillStyle = '#333';
+    // Background (bar wood color)
+    ctx.fillStyle = '#2a1f1a';
     ctx.fillRect(scaleX, 0, scaleWidth, scaleHeight);
+    // Border
+    ctx.strokeStyle = '#8b6f47';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(scaleX, 0, scaleWidth, scaleHeight);
     // Fill
     const fillHeight = (pipi / maxPipi) * scaleHeight;
-    ctx.fillStyle = '#ffff00'; // Yellow for urine
+    ctx.fillStyle = '#ffdd44'; // Brighter yellow for urine
     ctx.fillRect(scaleX, scaleHeight - fillHeight, scaleWidth, fillHeight);
     // Label
-    ctx.fillStyle = '#fff';
-    ctx.font = '12px Inter, sans-serif';
+    ctx.fillStyle = '#d4a574';
+    ctx.font = 'bold 11px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('Pipi', scaleX + scaleWidth / 2, 15);
 
