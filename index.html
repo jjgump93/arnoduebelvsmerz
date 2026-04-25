@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arno Dübel vs Merz Beer Run</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="game-shell">
+        <header>
+            <h1>Arno Dübel vs Merz Beer Run</h1>
+            <p>Collect beers. Drink as many as possible before getting too drunk or caught.</p>
+        </header>
+
+        <div class="score-panel">
+            <div class="score">Beers: <span id="beers">0</span> | Promille: <span id="promille">0.0</span> | Pipi: <span id="pipi">0.0</span>L</div>
+            <div class="status" id="status">Highscore: <span id="highscore">0</span></div>
+        </div>
+
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="752" height="480"></canvas>
+            <div class="overlay hidden" id="overlay">
+                <div class="overlay-inner">
+                    <img src="assets/vomit.png" alt="Vomiting" />
+                    <h2>Ready to start drinking?</h2>
+                    <p>Collect beers, manage your Promille and Pipi, and avoid the chaser. Can you survive the bender?</p>
+                    <button id="startBtn">Start Drinking</button>
+                    <button id="restartBtn" style="display: none;">Play Again</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Made with plain HTML and JavaScript.</p>
+        </footer>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
