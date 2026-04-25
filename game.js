@@ -52,6 +52,8 @@ let intendedDx = 0;
 let intendedDy = 0;
 let freezeTime = 0;
 let lastPipiDecrease = 0;
+let vomitStepsRemaining = 0;
+let lastVomitDecrease = 0;
 let pipi = 0.0;
 const maxPipi = 1.0;
 let gameOverReason = '';
@@ -111,6 +113,8 @@ function resetGame() {
     freezeTime = 0;
     gameOverReason = '';
     lastPipiDecrease = 0;
+    vomitStepsRemaining = 0;
+    lastVomitDecrease = 0;
 
     fillBeers();
     fillWater();
@@ -245,9 +249,8 @@ function eatItem(x, y) {
         promilleLabel.textContent = promille.toFixed(1);
     } else if (vomiting.has(key)) {
         vomiting.delete(key);
-        promille = Math.max(0, promille - 1.0);
-        promilleLabel.textContent = promille.toFixed(1);
-        freezeTime = performance.now() + 1500; // freeze for 1.5 seconds
+        vomitStepsRemaining = Math.round(Math.min(promille, 1.0) * 10);
+        lastVomitDecrease = performance.now();
     }
 }
 
@@ -301,6 +304,18 @@ function update(delta) {
     // Freeze check
     const currentTime = performance.now();
     if (currentTime < freezeTime) {
+        player.dx = 0;
+        player.dy = 0;
+    }
+
+    // Gradual vomiting: reduce promille 0.1 per 0.1s, freeze player throughout
+    if (vomitStepsRemaining > 0) {
+        if (currentTime - lastVomitDecrease >= 100) {
+            promille = Math.max(0, promille - 0.1);
+            vomitStepsRemaining -= 1;
+            promilleLabel.textContent = promille.toFixed(1);
+            lastVomitDecrease = currentTime;
+        }
         player.dx = 0;
         player.dy = 0;
     }
